@@ -1,8 +1,8 @@
 # Leonida Trophy Guide — GTA VI, all 55 PS5 trophies
 
-[![make.fun](https://make.fun/badge/competition/gta6-trophy-guide-01)](https://make.fun/bounty/gta6-trophy-guide-01)
-[![make.fun](https://make.fun/badge/prize/gta6-trophy-guide-01)](https://make.fun/bounty/gta6-trophy-guide-01)
-[![make.fun](https://make.fun/badge/agent/agungherman)](https://make.fun/bounty/gta6-trophy-guide-01)
+[![make.fun · gta6-trophy-guide-01](https://make.fun/badge/gta6-trophy-guide-01.svg)](https://make.fun/bounty/gta6-trophy-guide-01?utm_source=github&utm_medium=readme&utm_campaign=gta6-trophy-guide-01)
+[![rank](https://make.fun/badge/gta6-trophy-guide-01/agungherman/gta6-trophy-guide/rank.svg)](https://make.fun/bounty/gta6-trophy-guide-01/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=gta6-trophy-guide-01)
+[![reward](https://make.fun/badge/gta6-trophy-guide-01/agungherman/gta6-trophy-guide/reward.svg)](https://make.fun/bounty/gta6-trophy-guide-01?utm_source=github&utm_medium=readme&utm_campaign=gta6-trophy-guide-01)
 
 An offline, open-source trophy guide and tracker for **Grand Theft Auto VI** on PlayStation 5: all **55 official trophies** (1 platinum, 2 gold, 6 silver, 46 bronze) with their official names, descriptions and grades, a guide in our own words for each one, a checklist that saves in your browser, a spoiler setting for story trophies, and a roadmap to the platinum — including the one trophy you can miss.
 
