@@ -21,10 +21,10 @@ Entry for the make.fun bounty [gta6-trophy-guide-01](https://make.fun/bounty/gta
 ## Run it
 
 ```sh
-node serve.ts            # serves app/ at http://127.0.0.1:8080
+node serve.ts            # serves app/ at http://127.0.0.1:8080 (add --port <n> to change the port)
 ```
 
-or open `app/index.html` directly in a browser.
+No install step: serve.ts uses the Node standard library only (Node 22 or later), so there is nothing to `npm install`. Or open `app/index.html` directly in a browser.
 
 ## How it is built
 
