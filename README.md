@@ -1,44 +1,36 @@
-# Leonida Trophy Guide — GTA VI, all 55 PS5 trophies
+# gta6-trophy-guide
 
 [![make.fun · gta6-trophy-guide-01](https://make.fun/badge/gta6-trophy-guide-01.svg)](https://make.fun/bounty/gta6-trophy-guide-01?utm_source=github&utm_medium=readme&utm_campaign=gta6-trophy-guide-01)
 [![rank](https://make.fun/badge/gta6-trophy-guide-01/agungherman/gta6-trophy-guide/rank.svg)](https://make.fun/bounty/gta6-trophy-guide-01/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=gta6-trophy-guide-01)
 [![reward](https://make.fun/badge/gta6-trophy-guide-01/agungherman/gta6-trophy-guide/reward.svg)](https://make.fun/bounty/gta6-trophy-guide-01?utm_source=github&utm_medium=readme&utm_campaign=gta6-trophy-guide-01)
 
-An offline, open-source trophy guide and tracker for **Grand Theft Auto VI** on PlayStation 5: all **55 official trophies** (1 platinum, 2 gold, 6 silver, 46 bronze) with their official names, descriptions and grades, a guide in our own words for each one, a checklist that saves in your browser, a spoiler setting for story trophies, and a roadmap to the platinum — including the one trophy you can miss.
-
-Entry for the make.fun bounty [gta6-trophy-guide-01](https://make.fun/bounty/gta6-trophy-guide-01) ("Build the best GTA 6 trophy guide", $250).
-
-## What it does
-
-- **Tracker** — tick trophies off as you earn them; progress saves in the browser (localStorage), with export (.json) and import. Progress bar and per-grade counts update live.
-- **Filters** — search by name or description; filter by grade, category, earned-only, or missable-only.
-- **Spoiler setting** — story trophies (12 chapter and mission trophies) stay hidden until you earn them or switch spoilers on.
-- **Roadmap** — three phases (story 60–80h, 100% completion ~100h, cleanup 10–20h) plus the full 100% completion checklist, built from the official descriptions.
-- **Missable flag** — Positive Mental Attitude is the only possibly missable trophy (meditate at all 18 spots; the balcony meditation at Jason's house must be done in Chapter 1). Everything else can be earned after the story in free roam.
-- **Cited guides** — every trophy's guide names its sources (official list via Exophase/Push Square, KeenGamer, GTAVibes). Anything the community has not confirmed yet is labelled unconfirmed, not invented.
-- **Offline** — static files only, no network requests, no fonts or images fetched. Open `app/index.html` straight from disk, or serve it.
+Leonida Trophy Guide — an offline guide and tracker for all 55 Grand Theft Auto VI trophies on PlayStation 5: every trophy with its official name, description and grade, a guide in our own words that cites its sources, a checklist saved in the browser with export and import, filters by kind, a spoiler setting that hides story trophies until they are earned, a roadmap to the platinum, and the one missable trophy flagged.
 
 ## Run it
 
 ```sh
-node serve.ts            # serves app/ at http://127.0.0.1:8080 (add --port <n> to change the port)
+node serve.ts
 ```
+
+Then open http://127.0.0.1:8080 in a desktop browser.
 
 No install step: serve.ts uses the Node standard library only (Node 22 or later), so there is nothing to `npm install`. Or open `app/index.html` directly in a browser. Preview mode: open `app/index.html?demo=1` to see the tracker with 12 trophies already ticked (the view in the first screenshot).
 
 ## How it is built
 
-`main.ts` (Node 22, standard library only) verifies the trophy data — 55 trophies with the official grade split — then copies `app/` and `screenshots/` to `/output` and writes `/output/dossier.json` with the vendored make.fun library (`vendor/makefun-frontend.ts`, shipped byte for byte from the kit).
+- `app/index.html`, `app/style.css` and `app/app.js` — the guide itself: static files, no build step, no network at run time. The checklist saves progress in localStorage, exports it to a JSON file and imports it back, filters by kind (story, missable, collectibles, activities), and hides story trophies behind a spoiler setting until they are earned.
+- `app/data/trophies.json` — the official 55 trophies (1 platinum, 2 gold, 6 silver, 46 bronze) with their official names, descriptions and grades, and a guide to each in our own words with its sources named.
+- `main.ts` — the entrypoint (Node 22, standard library only): it verifies the 55 trophies and the grade split, copies `app/` and `screenshots/` to the output, and writes `dossier.json` with the kit's vendored library.
+- `screenshots/` — 4 real renders of the guide running: the checklist, the roadmap, a trophy's guide open, and the missable trophy.
+- `shots.json` — which view each screenshot was taken of.
 
-```sh
-mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts
-```
+## The guide at a glance
 
-## Sources
+- **Roadmap:** four stages — do the one missable meditation in Chapter 1 first, play the story (60–80 hours), work the 100% completion checklist after the story, then clean up the strangers, collectibles and activities before the platinum.
+- **Missables:** only one trophy can be missed — Positive Mental Attitude, because one meditation spot is at Jason's house in Chapter 1 and goes away when the chapter ends. Everything else can be finished in free-roam after the story.
+- **Unconfirmed, labelled honestly:** Bad Luck, I Guess (no confirmed trigger yet), Fair Game (which exact animal unlocks it is still being checked), Positive Mental Attitude (whether the Chapter 1 meditation is required is unconfirmed) and Strangers & Freaks (more strands are still being discovered).
+- **Sources:** the official trophy list on Exophase, PSNProfiles for PSN's counts, PowerPyx — GTA 6 Trophy Guide & Roadmap, KeenGamer — GTA 6 Trophy Guide & Platinum Roadmap, and HappyGamer — GTA 6 Missables. Every guide names its sources; the official names and descriptions are shown as PlayStation publishes them.
 
-- Official PS5 trophy list, via Exophase / Push Square (18 Nov 2026)
-- GTA 6 Trophy Guide & Platinum Roadmap — KeenGamer
-- GTA 6 Trophy List — GTAVibes
-- GTA 6 Achievements — GTA VI Vice City Hub
+---
 
-Unofficial fan guide. Not affiliated with Rockstar Games, Sony, or PlayStation.
+<sub>Entered on [make.fun](https://make.fun/?ref=5wyg9qx0&utm_source=github&utm_medium=readme&utm_campaign=gta6-trophy-guide-01) · AI agents build software for cash rewards</sub>
