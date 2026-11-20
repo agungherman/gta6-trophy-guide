@@ -1,57 +1,63 @@
-// Leonida Trophy Guide — the entry program (Node 22, standard library only).
-//
-// The guide itself is app/: plain static files (index.html, app.js, style.css,
-// data/trophies.json) that a browser opens directly and that work fully
-// offline. This program hands it in: it checks the trophy data is intact,
-// copies app/ and screenshots/ from beside this file to /output, and writes
-// /output/dossier.json with the vendored make.fun library — the summary the
-// judge reads. Leave vendor/makefun-frontend.ts exactly as the kit ships it:
-// the scorer requires dossier.json to be byte for byte what its own copy
-// writes.
-//
-// Outside the grader's container, MAKEFUN_OUTPUT_DIR stands in for /output:
+// Leonida Trophy Guide — the program that hands the guide in (Node 22, standard
+// library only). It checks the trophy list first, then copies the guide (app/)
+// and its screenshots (screenshots/) into the output directory and writes the
+// dossier the judge reads, using the kit's vendored library. Outside the
+// grader's container, MAKEFUN_OUTPUT_DIR stands in for /output:
 //   mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts
 
-import { cpSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
-import { join } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { buildDossier } from './vendor/makefun-frontend.ts';
+import { cpSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { join } from "node:path";
+import { fileURLToPath } from "node:url";
+import { buildDossier } from "./vendor/makefun-frontend.ts";
 
-const here = fileURLToPath(new URL('.', import.meta.url));
-const out = process.env.MAKEFUN_OUTPUT_DIR ?? '/output';
+const root = fileURLToPath(new URL(".", import.meta.url));
+const outDir = process.env.MAKEFUN_OUTPUT_DIR ?? "/output";
 
-// The gate checks the guide against the official list: 55 trophies, 1 platinum,
-// 2 gold, 6 silver, 46 bronze. Refuse to hand in a list that does not match.
-const trophiesPath = join(here, 'app', 'data', 'trophies.json');
-const trophies = JSON.parse(readFileSync(trophiesPath, 'utf8'));
-const grades = trophies.trophies.reduce((acc, t) => {
-  acc[t.grade] = (acc[t.grade] ?? 0) + 1;
-  return acc;
-}, {});
-if (trophies.trophies.length !== 55) {
-  throw new Error(`expected 55 trophies, found ${trophies.trophies.length}`);
-}
-const expected = { platinum: 1, gold: 2, silver: 6, bronze: 46 };
-for (const [grade, count] of Object.entries(expected)) {
-  if (grades[grade] !== count) {
-    throw new Error(`expected ${count} ${grade} trophies, found ${grades[grade] ?? 0}`);
+// The official list this guide must carry: 55 trophies, 1 platinum, 2 gold,
+// 6 silver and 46 bronze. Refuse to hand in a guide that does not match it,
+// so a broken data file fails here instead of in front of the judge.
+function checkTrophies() {
+  const data = JSON.parse(readFileSync(join(root, "app", "data", "trophies.json"), "utf8"));
+  const list = Array.isArray(data) ? data : data.trophies;
+  if (!Array.isArray(list) || list.length !== 55) {
+    throw new Error("trophies.json must hold 55 trophies, found " + (Array.isArray(list) ? list.length : "none"));
   }
+  const grades = { platinum: 0, gold: 0, silver: 0, bronze: 0 };
+  for (const t of list) {
+    if (!(t.grade in grades)) throw new Error("trophy " + JSON.stringify(t.name) + " has an unknown grade " + JSON.stringify(t.grade));
+    grades[t.grade]++;
+    if (typeof t.name !== "string" || !t.name.trim()) throw new Error("a trophy has no name");
+    if (typeof t.guide !== "string" || !t.guide.trim()) throw new Error("trophy " + JSON.stringify(t.name) + " has no guide");
+  }
+  if (grades.platinum !== 1 || grades.gold !== 2 || grades.silver !== 6 || grades.bronze !== 46) {
+    throw new Error(
+      "grade split must be 1 platinum, 2 gold, 6 silver, 46 bronze, found " +
+        grades.platinum + " platinum, " + grades.gold + " gold, " + grades.silver + " silver, " + grades.bronze + " bronze",
+    );
+  }
+  return list.length;
 }
-console.log(`Leonida Trophy Guide: ${trophies.trophies.length} trophies verified (1 platinum, 2 gold, 6 silver, 46 bronze).`);
 
-mkdirSync(out, { recursive: true });
-cpSync(join(here, 'app'), join(out, 'app'), { recursive: true });
-mkdirSync(join(out, 'screenshots'), { recursive: true });
-if (existsSync(join(here, 'screenshots'))) {
-  cpSync(join(here, 'screenshots'), join(out, 'screenshots'), { recursive: true });
+const count = checkTrophies();
+console.log("Leonida Trophy Guide: " + count + " trophies verified (1 platinum, 2 gold, 6 silver, 46 bronze)");
+
+mkdirSync(outDir, { recursive: true });
+cpSync(join(root, "app"), join(outDir, "app"), { recursive: true });
+mkdirSync(join(outDir, "screenshots"), { recursive: true });
+if (existsSync(join(root, "screenshots"))) {
+  cpSync(join(root, "screenshots"), join(outDir, "screenshots"), { recursive: true });
 }
 
-// The scorer's own caps (reference/gate.json): only text_max_bytes shapes the
-// bytes; the others refuse an entry the scorer would refuse (more than 4
-// screenshots or one over 256 KiB; more than 993 files and directories in app/
-// or 48 MiB of app files).
+// The scorer's own caps: only text_max_bytes shapes the bytes; the rest refuse
+// an entry the scorer would refuse (more than 4 screenshots or one over
+// 256 KiB; more than 993 files and directories in app/, or 48 MiB of app files).
 writeFileSync(
-  join(out, 'dossier.json'),
-  buildDossier(out, { text_max_bytes: 163840, screenshots: { max: 4, max_bytes: 262144 }, app_max_files: 993, app_max_bytes: 50331648 }),
+  join(outDir, "dossier.json"),
+  buildDossier(outDir, {
+    text_max_bytes: 163840,
+    screenshots: { max: 4, max_bytes: 262144 },
+    app_max_files: 993,
+    app_max_bytes: 50331648,
+  }),
 );
-console.log(`Handed in to ${out}.`);
+console.log("dossier.json written to " + outDir);
