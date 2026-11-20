@@ -24,7 +24,7 @@ Entry for the make.fun bounty [gta6-trophy-guide-01](https://make.fun/bounty/gta
 node serve.ts            # serves app/ at http://127.0.0.1:8080 (add --port <n> to change the port)
 ```
 
-No install step: serve.ts uses the Node standard library only (Node 22 or later), so there is nothing to `npm install`. Or open `app/index.html` directly in a browser.
+No install step: serve.ts uses the Node standard library only (Node 22 or later), so there is nothing to `npm install`. Or open `app/index.html` directly in a browser. Preview mode: open `app/index.html?demo=1` to see the tracker with 12 trophies already ticked (the view in the first screenshot).
 
 ## How it is built
 
