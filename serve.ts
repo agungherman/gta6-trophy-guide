@@ -1,41 +1,78 @@
-// Tiny static server for the Leonida Trophy Guide, for local play-testing.
-// Serves app/ on 127.0.0.1, default port 8080 (override with --port <n>).
-// Usage: node serve.ts [--port 8081]  then open http://localhost:8081/
-import { createServer } from 'node:http';
-import { readFile } from 'node:fs/promises';
-import { extname, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
+// A small static server for the guide's app/ folder (Node 22, standard library
+// only), so the guide can be tried locally with no build step:
+//   node serve.ts            serves app/ at http://127.0.0.1:8080
+//   node serve.ts --port 3000   serves it on port 3000 instead
+// It only ever serves files under app/, sends the MIME types a browser needs,
+// and does nothing else: this is a development convenience, not a server for
+// the internet.
+import { createReadStream, statSync } from "node:fs";
+import { createServer } from "node:http";
+import { extname, join, normalize, resolve, sep } from "node:path";
+import { fileURLToPath } from "node:url";
 
-const here = fileURLToPath(new URL('.', import.meta.url));
-const appDir = join(here, 'app');
-const types = {
-  '.html': 'text/html; charset=utf-8',
-  '.js': 'text/javascript; charset=utf-8',
-  '.css': 'text/css; charset=utf-8',
-  '.json': 'application/json; charset=utf-8',
-  '.png': 'image/png',
-  '.jpg': 'image/jpeg',
-};
+const appRoot = resolve(fileURLToPath(new URL("./app", import.meta.url)));
 
-const portIndex = process.argv.indexOf('--port');
-const port = portIndex >= 0 ? Number(process.argv[portIndex + 1]) : 8080;
+function pickPort() {
+  const args = process.argv.slice(2);
+  const at = args.indexOf("--port");
+  const wanted = at === -1 ? 8080 : Number(args[at + 1]);
+  return Number.isInteger(wanted) && wanted > 0 && wanted < 65536 ? wanted : 8080;
+}
 
-const server = createServer(async (req, res) => {
+const port = pickPort();
+
+const mimeFor = (file) =>
+  ({
+    ".html": "text/html; charset=utf-8",
+    ".js": "text/javascript; charset=utf-8",
+    ".mjs": "text/javascript; charset=utf-8",
+    ".css": "text/css; charset=utf-8",
+    ".json": "application/json; charset=utf-8",
+    ".svg": "image/svg+xml",
+    ".png": "image/png",
+    ".jpg": "image/jpeg",
+    ".jpeg": "image/jpeg",
+    ".webp": "image/webp",
+    ".ico": "image/x-icon",
+    ".woff2": "font/woff2",
+  })[extname(file).toLowerCase()] ?? "application/octet-stream";
+
+function resolveInside(requestPath) {
+  let path = requestPath;
+  if (path.endsWith("/")) path += "index.html";
+  const file = resolve(join(appRoot, normalize(path)));
+  if (file !== appRoot && !file.startsWith(appRoot + sep)) return null;
+  return file;
+}
+
+createServer((req, res) => {
+  let path;
   try {
-    const url = new URL(req.url ?? '/', 'http://127.0.0.1');
-    let path = decodeURIComponent(url.pathname);
-    if (path === '/') path = '/index.html';
-    const file = join(appDir, path);
-    if (!file.startsWith(appDir)) { res.writeHead(403); res.end('forbidden'); return; }
-    const body = await readFile(file);
-    res.writeHead(200, { 'content-type': types[extname(file)] ?? 'application/octet-stream' });
-    res.end(body);
+    path = decodeURIComponent(new URL(req.url ?? "/", "http://localhost").pathname);
   } catch {
-    res.writeHead(404);
-    res.end('not found');
+    res.writeHead(400).end("bad request");
+    return;
   }
-});
-
-server.listen(port, '127.0.0.1', () => {
-  console.log(`Leonida Trophy Guide at http://127.0.0.1:${port}/`);
+  const file = resolveInside(path);
+  if (file === null) {
+    res.writeHead(403).end("forbidden");
+    return;
+  }
+  let size;
+  try {
+    const info = statSync(file);
+    if (!info.isFile()) throw new Error("not a file");
+    size = info.size;
+  } catch {
+    res.writeHead(404).end("not found");
+    return;
+  }
+  res.writeHead(200, {
+    "content-type": mimeFor(file),
+    "content-length": size,
+    "cache-control": "no-store",
+  });
+  createReadStream(file).pipe(res);
+}).listen(port, "127.0.0.1", () => {
+  console.log("Leonida Trophy Guide: app/ is on http://127.0.0.1:" + port);
 });
