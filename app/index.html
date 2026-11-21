@@ -1,84 +1,91 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Leonida Trophy Guide — GTA VI (55 trophies)</title>
+<title>Leonida Trophy Guide — GTA VI</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header class="masthead">
-  <div class="masthead-inner">
+<header class="top">
+  <div class="top-inner">
     <div>
       <h1>Leonida Trophy Guide</h1>
-      <p class="tagline">Grand Theft Auto VI &middot; PlayStation 5 &middot; all 55 trophies, with a tracker that works offline</p>
+      <p class="sub">Grand Theft Auto VI &middot; PlayStation 5 &middot; all 55 trophies, one checklist</p>
     </div>
-    <div class="progress-box" id="progressBox">
-      <div class="progress-numbers"><span id="earnedCount">0</span><span class="of"> / 55 earned</span></div>
+    <div class="progress" id="progress" aria-label="progress">
       <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-      <div class="progress-grades" id="progressGrades"></div>
+      <div class="progress-text" id="progressText">0 / 55 earned</div>
     </div>
   </div>
-  <nav class="tabs" id="tabs">
-    <button type="button" data-view="checklist" class="tab active">Checklist</button>
-    <button type="button" data-view="roadmap" class="tab">Roadmap</button>
-    <button type="button" data-view="missables" class="tab">Missables</button>
+  <nav class="tabs" role="tablist">
+    <button class="tab active" data-view="checklist" role="tab">Checklist</button>
+    <button class="tab" data-view="roadmap" role="tab">Roadmap</button>
+    <button class="tab" data-view="missables" role="tab">Missables</button>
   </nav>
 </header>
 
 <main>
   <section id="view-checklist" class="view">
-    <div class="toolbar">
-      <input type="search" id="search" placeholder="Search a trophy or a guide…" aria-label="Search trophies">
-      <div class="filters" id="filters">
-        <button type="button" data-kind="all" class="filter active">All</button>
-        <button type="button" data-kind="story" class="filter">Story</button>
-        <button type="button" data-kind="missable" class="filter">Missable</button>
-        <button type="button" data-kind="collectibles" class="filter">Collectibles</button>
-        <button type="button" data-kind="activities" class="filter">Activities</button>
-      </div>
-      <label class="spoiler-toggle"><input type="checkbox" id="spoilerToggle" checked> Hide story spoilers</label>
-      <div class="save-buttons">
-        <button type="button" id="exportBtn">Export progress</button>
-        <button type="button" id="importBtn">Import progress</button>
-        <input type="file" id="importFile" accept="application/json,.json" hidden>
-        <button type="button" id="resetBtn" class="quiet">Reset</button>
-      </div>
+    <div class="controls">
+      <input id="search" type="search" placeholder="Search trophies…" aria-label="Search trophies">
+      <select id="kindFilter" aria-label="Filter by kind">
+        <option value="">All kinds</option>
+        <option value="story">Story</option>
+        <option value="activity">Activities</option>
+        <option value="collectible">Collectibles</option>
+        <option value="completion">Completion</option>
+      </select>
+      <select id="gradeFilter" aria-label="Filter by grade">
+        <option value="">All grades</option>
+        <option value="platinum">Platinum</option>
+        <option value="gold">Gold</option>
+        <option value="silver">Silver</option>
+        <option value="bronze">Bronze</option>
+      </select>
+      <select id="earnedFilter" aria-label="Filter by earned state">
+        <option value="">All</option>
+        <option value="earned">Earned</option>
+        <option value="unearned">Not earned</option>
+      </select>
+      <label class="spoiler"><input type="checkbox" id="spoilerToggle" checked> Hide story spoilers</label>
+      <button id="exportBtn" type="button">Export</button>
+      <button id="importBtn" type="button">Import</button>
+      <button id="resetBtn" type="button">Reset</button>
+      <input id="importFile" type="file" accept="application/json" hidden>
     </div>
-    <p class="list-meta" id="listMeta"></p>
-    <div class="checklist-wrap">
-      <ul class="trophy-list" id="trophyList"></ul>
-      <aside class="detail" id="detail" aria-live="polite">
-        <p class="detail-empty">Pick a trophy on the left to read its guide and its sources.</p>
-      </aside>
-    </div>
+    <p class="hint" id="demoNote" hidden>Preview mode: 12 trophies are pre-ticked so you can see the tracker filled in. Your real progress is untouched.</p>
+    <ul class="cards" id="cards"></ul>
+    <p class="empty" id="emptyNote" hidden>No trophies match these filters.</p>
   </section>
 
   <section id="view-roadmap" class="view" hidden>
     <h2>Road to the platinum</h2>
-    <p class="intro">Four stages, in the order to do them. About 200 hours all in, at a relaxed pace — the story is 60 to 80 of those. There is no mission replay and no New Game+, so keep a manual save at the start and the end of each chapter (the game gives you 15 manual save slots plus one autosave).</p>
-    <ol class="roadmap" id="roadmap"></ol>
+    <p class="lede">Five stages, in order. Finish a stage before moving on — the missable lives in stage 4, and the 100% sweep only makes sense once everything else is done.</p>
+    <ol class="stages" id="stages"></ol>
   </section>
 
   <section id="view-missables" class="view" hidden>
-    <h2>Missable trophies</h2>
-    <p class="intro">Only one trophy can be missed, and only in one spot. Everything else can be finished in free-roam after the story, so once the meditation below is done you can relax and play at your own pace.</p>
-    <div id="missableList"></div>
-    <h3>Why nothing else is missable</h3>
-    <ul class="safe-list">
-      <li>Every story trophy unlocks automatically by finishing the story — none of them can be missed.</li>
-      <li>Every quest giver with a trophy (Andy, Kenton, Billy, Randy, Tyrone, Bret) is available again after the story, even the ones who disappear for a while mid-story.</li>
-      <li>Timed hourglass missions do expire, but no trophy needs them, and there are far more than the 100 optional missions the 100% checklist asks for.</li>
-      <li>Cheats disable trophies and saving for that session — do not use them on a trophy run.</li>
-    </ul>
+    <h2>Missables</h2>
+    <p class="lede">Only one trophy in this list can be missed. Everything else can be earned after the story, at your own pace.</p>
+    <ul class="cards" id="missableCards"></ul>
   </section>
+
+  <aside id="detail" class="detail" hidden>
+    <button id="detailClose" type="button" aria-label="Close guide">&times;</button>
+    <h2 id="detailName"></h2>
+    <p class="detail-meta" id="detailMeta"></p>
+    <p id="detailDesc"></p>
+    <h3>How to get it</h3>
+    <p id="detailGuide"></p>
+    <p class="detail-source" id="detailSource"></p>
+    <p class="detail-flag" id="detailFlag" hidden></p>
+  </aside>
 </main>
 
 <footer>
-  <p>Names, descriptions and grades are the official PlayStation list as published on Exophase and PSNProfiles (18 November 2026). Guides are written for this page, in our own words, and cite their sources beside each trophy. No Rockstar Games logo, artwork or game screenshot is used anywhere here.</p>
-  <p class="foot-sources">Sources: the official trophy list on Exophase, PSNProfiles for PSN's counts, PowerPyx — GTA 6 Trophy Guide &amp; Roadmap, KeenGamer — GTA 6 Trophy Guide &amp; Platinum Roadmap, HappyGamer — GTA 6 Missables.</p>
+  <p>Guide written for the make.fun bounty gta6-trophy-guide-01. Trophy list: the official 55, 2026-11-18. Four trophies are labelled unconfirmed where the community has not pinned the details down yet — they are flagged in the list.</p>
 </footer>
-
-<script type="module" src="app.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
