@@ -1,255 +1,214 @@
-/* Leonida Trophy Guide — a warm sunset look of its own. No external files. */
 :root {
-  --ink: #26232a;
-  --muted: #6b6570;
-  --paper: #faf6ef;
-  --card: #ffffff;
-  --line: #e4dccd;
-  --plum: #33203f;
-  --plum-soft: #4a3358;
-  --accent: #c2275b;
-  --accent-soft: #fbe7ee;
-  --gold: #a67c00;
-  --good: #1d7a4d;
-  --warn: #b45309;
-  --radius: 10px;
+  --bg: #171226;
+  --bg2: #221a38;
+  --card: #2a2144;
+  --ink: #f4eefc;
+  --muted: #b9abd4;
+  --accent: #ffb454;
+  --accent2: #7ee0c3;
+  --platinum: #e8e8f2;
+  --gold: #ffd75e;
+  --silver: #cfd6e4;
+  --bronze: #e0a06a;
+  --danger: #ff7a7a;
+  --line: #3d3260;
+  --radius: 12px;
 }
-
 * { box-sizing: border-box; }
-
 body {
   margin: 0;
-  background: var(--paper);
+  background: var(--bg);
   color: var(--ink);
-  font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
-
-h1, h2, h3 { line-height: 1.2; margin: 0 0 8px; }
-p { margin: 0 0 12px; }
-
-/* Header */
-.masthead {
-  background: linear-gradient(135deg, var(--plum), #57284d 60%, #7a2f4e);
-  color: #fff;
-  padding: 20px 20px 0;
+.top {
+  background: linear-gradient(120deg, #2a1650, #4a1e5c 55%, #1d2f52);
+  border-bottom: 1px solid var(--line);
+  padding: 20px 16px 0;
 }
-.masthead-inner {
-  max-width: 1180px;
+.top-inner {
+  max-width: 1080px;
   margin: 0 auto;
   display: flex;
-  gap: 24px;
-  align-items: flex-end;
-  justify-content: space-between;
   flex-wrap: wrap;
+  gap: 16px;
+  align-items: end;
+  justify-content: space-between;
 }
-.masthead h1 { font-size: 30px; letter-spacing: 0.2px; }
-.tagline { color: #e8d5e3; margin: 0 0 14px; font-size: 14px; }
-
-.progress-box { min-width: 280px; margin-bottom: 14px; }
-.progress-numbers { font-size: 22px; font-weight: 700; }
-.progress-numbers .of { font-size: 14px; font-weight: 400; color: #e8d5e3; }
+h1 { margin: 0; font-size: 30px; letter-spacing: .2px; }
+.sub { margin: 4px 0 0; color: var(--muted); }
+.progress { min-width: 260px; flex: 1 1 260px; max-width: 420px; }
 .progress-bar {
-  height: 10px;
-  background: rgba(255, 255, 255, 0.22);
-  border-radius: 6px;
+  height: 12px;
+  background: #00000055;
+  border-radius: 999px;
   overflow: hidden;
-  margin: 6px 0;
 }
 .progress-fill {
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, #f2b544, #e8537a);
-  transition: width 0.25s ease;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  transition: width .3s ease;
 }
-.progress-grades { font-size: 12.5px; color: #e8d5e3; }
-
+.progress-text { margin-top: 6px; color: var(--muted); font-size: 14px; }
 .tabs {
-  max-width: 1180px;
-  margin: 0 auto;
+  max-width: 1080px;
+  margin: 18px auto 0;
   display: flex;
-  gap: 4px;
+  gap: 8px;
 }
 .tab {
-  border: 0;
   background: transparent;
-  color: #e8d5e3;
-  font: inherit;
-  font-weight: 600;
+  color: var(--muted);
+  border: 1px solid transparent;
+  border-bottom: none;
+  border-radius: 10px 10px 0 0;
   padding: 10px 18px;
+  font: inherit;
   cursor: pointer;
-  border-radius: 8px 8px 0 0;
 }
-.tab:hover { color: #fff; background: rgba(255, 255, 255, 0.1); }
-.tab.active { background: var(--paper); color: var(--ink); }
-
-/* Main */
-main { max-width: 1180px; margin: 0 auto; padding: 18px 20px 8px; }
-.view h2 { font-size: 22px; }
-.intro { color: var(--muted); max-width: 760px; }
-
-/* Toolbar */
-.toolbar {
+.tab.active { background: var(--bg); color: var(--ink); border-color: var(--line); }
+main { max-width: 1080px; margin: 0 auto; padding: 20px 16px 40px; }
+h2 { font-size: 22px; margin: 4px 0 8px; }
+.lede { color: var(--muted); max-width: 72ch; }
+.controls {
   display: flex;
-  gap: 10px;
-  align-items: center;
   flex-wrap: wrap;
-  margin-bottom: 8px;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 16px;
 }
-.toolbar input[type="search"] {
-  flex: 1 1 220px;
-  padding: 9px 12px;
+.controls input[type="search"], .controls select {
+  background: var(--bg2);
+  color: var(--ink);
   border: 1px solid var(--line);
   border-radius: 8px;
+  padding: 8px 10px;
   font: inherit;
-  background: var(--card);
 }
-.filters { display: flex; gap: 6px; flex-wrap: wrap; }
-.filter, .save-buttons button {
-  border: 1px solid var(--line);
-  background: var(--card);
+.controls input[type="search"] { flex: 1 1 220px; }
+.controls button {
+  background: var(--bg2);
   color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 12px;
   font: inherit;
-  font-size: 13.5px;
-  padding: 7px 12px;
-  border-radius: 999px;
   cursor: pointer;
 }
-.filter:hover, .save-buttons button:hover { border-color: var(--accent); color: var(--accent); }
-.filter.active { background: var(--accent); border-color: var(--accent); color: #fff; }
-.spoiler-toggle { font-size: 13.5px; color: var(--muted); display: flex; gap: 6px; align-items: center; cursor: pointer; }
-.save-buttons { display: flex; gap: 6px; margin-left: auto; }
-.save-buttons .quiet { color: var(--muted); }
-
-.list-meta { color: var(--muted); font-size: 13.5px; margin: 0 0 10px; }
-
-/* Checklist + detail */
-.checklist-wrap {
-  display: grid;
-  grid-template-columns: minmax(0, 7fr) minmax(280px, 5fr);
-  gap: 16px;
-  align-items: start;
+.controls button:hover { border-color: var(--accent); }
+.spoiler { color: var(--muted); font-size: 14px; display: flex; gap: 6px; align-items: center; }
+.hint {
+  background: #3a2d1c;
+  border: 1px solid #6b5227;
+  color: #ffd9a0;
+  border-radius: 8px;
+  padding: 8px 12px;
 }
-.trophy-list { list-style: none; margin: 0; padding: 0; }
-.trophy-row {
-  display: flex;
-  gap: 10px;
-  align-items: flex-start;
+.cards {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 12px;
+}
+.card {
   background: var(--card);
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  padding: 10px 12px;
-  margin-bottom: 8px;
+  padding: 14px;
   cursor: pointer;
 }
-.trophy-row:hover { border-color: var(--accent); }
-.trophy-row.selected { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
-.trophy-row.earned { background: #f4fbf6; }
-.trophy-row input[type="checkbox"] { width: 18px; height: 18px; margin-top: 2px; flex: none; accent-color: var(--good); cursor: pointer; }
-.trophy-main { flex: 1; min-width: 0; }
-.trophy-name { font-weight: 700; font-size: 14.5px; }
-.trophy-desc { color: var(--muted); font-size: 13.5px; }
-.trophy-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
-.tag {
-  font-size: 11.5px;
+.card:hover { border-color: var(--accent); }
+.card.earned { border-color: var(--accent2); }
+.card-top { display: flex; justify-content: space-between; gap: 8px; align-items: start; }
+.card h3 { margin: 0; font-size: 17px; }
+.grade {
+  flex: none;
+  font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.4px;
-  padding: 2px 7px;
+  letter-spacing: .5px;
   border-radius: 999px;
-  background: #efe9dd;
-  color: #5c5546;
+  padding: 2px 8px;
+  border: 1px solid currentColor;
 }
-.tag.grade-platinum { background: #dfe5ec; color: #4c5a6b; }
-.tag.grade-gold { background: #f6e3a1; color: var(--gold); }
-.tag.grade-silver { background: #e3e7ec; color: #5b6673; }
-.tag.grade-bronze { background: #f0dcc8; color: #8a5a2b; }
-.tag.missable { background: #fde8d2; color: var(--warn); }
-.tag.unconfirmed { background: #fde8e8; color: #a33333; }
-.tag.kind { background: var(--accent-soft); color: var(--accent); }
-
-.detail {
-  position: sticky;
-  top: 12px;
+.grade.platinum { color: var(--platinum); }
+.grade.gold { color: var(--gold); }
+.grade.silver { color: var(--silver); }
+.grade.bronze { color: var(--bronze); }
+.card p { margin: 8px 0 0; color: var(--muted); font-size: 14px; }
+.card .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.tag {
+  font-size: 12px;
+  color: var(--muted);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 1px 8px;
+}
+.tag.warn { color: var(--danger); border-color: var(--danger); }
+.tag.note { color: var(--accent); border-color: var(--accent); }
+.card .tick {
+  margin-top: 10px;
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  font-size: 14px;
+  color: var(--accent2);
+}
+.card .tick input { accent-color: var(--accent2); width: 16px; height: 16px; }
+.empty { color: var(--muted); }
+.stages { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.stages li {
   background: var(--card);
   border: 1px solid var(--line);
   border-radius: var(--radius);
   padding: 16px;
 }
-.detail h3 { font-size: 18px; }
-.detail .detail-grade { color: var(--muted); font-size: 13px; margin-bottom: 8px; }
-.detail .guide-text { white-space: pre-wrap; }
-.detail .sources { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 10px; margin-top: 12px; }
-.detail .sources b { color: var(--ink); }
-.detail .warn-box {
-  background: #fdf3e3;
-  border: 1px solid #f0d9ac;
-  color: #7c4a03;
-  border-radius: 8px;
-  padding: 10px 12px;
-  margin: 10px 0;
-  font-size: 13.5px;
-}
-.detail .note-box {
-  background: #fdecec;
-  border: 1px solid #f3c1c1;
-  color: #7c2222;
-  border-radius: 8px;
-  padding: 10px 12px;
-  margin: 10px 0;
-  font-size: 13.5px;
-}
-.detail-empty { color: var(--muted); }
-
-/* Roadmap */
-.roadmap { list-style: none; margin: 0; padding: 0; counter-reset: stage; }
-.roadmap > li {
-  counter-increment: stage;
-  background: var(--card);
-  border: 1px solid var(--line);
+.stages h3 { margin: 0 0 6px; }
+.stages p { margin: 0; color: var(--muted); }
+.stages .count { float: right; color: var(--accent); font-weight: 700; }
+.detail {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  width: min(420px, calc(100vw - 32px));
+  max-height: 70vh;
+  overflow: auto;
+  background: var(--bg2);
+  border: 1px solid var(--accent);
   border-radius: var(--radius);
-  padding: 16px 18px;
-  margin-bottom: 12px;
-  position: relative;
+  padding: 18px;
+  box-shadow: 0 12px 40px #00000088;
 }
-.roadmap > li::before {
-  content: "Stage " counter(stage);
-  display: block;
-  font-size: 12px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.6px;
-  color: var(--accent);
-  margin-bottom: 4px;
+.detail h2 { margin-top: 0; }
+.detail-meta { color: var(--muted); font-size: 14px; }
+.detail-source { color: var(--muted); font-size: 13px; }
+.detail-flag {
+  background: #4a1d1d;
+  border: 1px solid var(--danger);
+  color: #ffc9c9;
+  border-radius: 8px;
+  padding: 8px 10px;
 }
-.roadmap h3 { font-size: 17px; }
-.roadmap .stage-trophies { color: var(--muted); font-size: 13.5px; }
-
-/* Missables */
-.missable-card {
-  background: #fff7ed;
-  border: 1px solid #f0d9ac;
-  border-radius: var(--radius);
-  padding: 16px 18px;
-  margin-bottom: 14px;
+#detailClose {
+  float: right;
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 26px;
+  cursor: pointer;
+  line-height: 1;
 }
-.missable-card h3 { font-size: 18px; }
-.missable-card .guide-text { white-space: pre-wrap; }
-.safe-list { max-width: 760px; }
-.safe-list li { margin-bottom: 6px; }
-
-/* Footer */
 footer {
-  max-width: 1180px;
+  max-width: 1080px;
   margin: 0 auto;
-  padding: 18px 20px 28px;
+  padding: 0 16px 32px;
   color: var(--muted);
   font-size: 13px;
-  border-top: 1px solid var(--line);
 }
-.foot-sources { margin-bottom: 0; }
-
-@media (max-width: 860px) {
-  .checklist-wrap { grid-template-columns: 1fr; }
-  .detail { position: static; }
-  .masthead h1 { font-size: 24px; }
+@media (max-width: 640px) {
+  h1 { font-size: 24px; }
+  .detail { right: 8px; bottom: 8px; width: calc(100vw - 16px); }
 }
